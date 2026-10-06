@@ -1,0 +1,1250 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0d1813" />
+    <title>Запис до майстрів</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Forum&family=Onest:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #0d1813;
+        --surface: #13241d;
+        --surface-2: #1a3026;
+        --line: #2a4439;
+        --line-soft: rgba(241, 231, 207, 0.09);
+        --ink: #f1e7cf;
+        --ink-2: #b7c2b0;
+        --ink-3: #7e8f84;
+        --gold: #cba655;
+        --gold-hi: #e3c77e;
+        --danger: #ee9484;
+        --display: "Forum", Georgia, serif;
+        --text: "Onest", system-ui, sans-serif;
+        --row: 44px;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        min-height: 100dvh;
+        font-family: var(--text);
+        font-size: 15px;
+        line-height: 1.45;
+        color: var(--ink);
+        background: radial-gradient(
+            120% 70% at 50% -10%,
+            rgba(203, 166, 85, 0.13),
+            transparent 60%
+          ),
+          var(--bg);
+      }
+      [hidden] {
+        display: none !important;
+      }
+      button,
+      input,
+      select {
+        font: inherit;
+        color: inherit;
+      }
+      :focus-visible {
+        outline: 2px solid var(--gold-hi);
+        outline-offset: 2px;
+      }
+
+      /* ---------- кнопки ---------- */
+      .btn {
+        border: 1px solid var(--line);
+        background: transparent;
+        border-radius: 12px;
+        padding: 10px 18px;
+        cursor: pointer;
+        transition: border-color 0.15s, background 0.15s;
+      }
+      .btn:hover {
+        border-color: var(--gold);
+        background: rgba(203, 166, 85, 0.08);
+      }
+      .btn.primary {
+        border: none;
+        color: #1b1405;
+        font-weight: 600;
+        background: linear-gradient(180deg, var(--gold-hi), var(--gold));
+      }
+      .btn.primary:hover {
+        filter: brightness(1.06);
+      }
+      .btn.danger {
+        color: var(--danger);
+        border-color: rgba(238, 148, 132, 0.45);
+      }
+      .btn.danger.armed {
+        background: var(--danger);
+        color: #2a0f0a;
+        border-color: var(--danger);
+        font-weight: 600;
+      }
+      .round {
+        width: 42px;
+        height: 42px;
+        padding: 0;
+        border-radius: 50%;
+        font-size: 20px;
+        line-height: 1;
+        display: grid;
+        place-items: center;
+      }
+
+      /* ---------- поля ---------- */
+      .field {
+        display: block;
+        margin-top: 14px;
+      }
+      .field > span {
+        display: block;
+        font-size: 13px;
+        color: var(--ink-2);
+        margin-bottom: 6px;
+      }
+      input,
+      select {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--line);
+        background: #0f1d17;
+      }
+      .row2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .err {
+        min-height: 20px;
+        margin: 12px 0 0;
+        font-size: 13px;
+        color: var(--danger);
+      }
+
+      /* ---------- екран входу ---------- */
+      #login {
+        position: relative;
+        min-height: 100dvh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        overflow: hidden;
+      }
+      .terraces {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        height: 48vh;
+        min-height: 260px;
+        pointer-events: none;
+      }
+      .card {
+        position: relative;
+        z-index: 1;
+        width: min(400px, 100%);
+        padding: 34px 32px 30px;
+        border-radius: 26px;
+        background: rgba(19, 36, 29, 0.93);
+        border: 1px solid rgba(203, 166, 85, 0.3);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+      }
+      .card .bloom {
+        display: block;
+        width: 84px;
+        height: 84px;
+        margin: 0 auto 12px;
+        animation: bloom 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+      @keyframes bloom {
+        from {
+          opacity: 0;
+          transform: rotate(-50deg) scale(0.55);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .card h1 {
+        margin: 0;
+        text-align: center;
+        font: 400 32px/1.1 var(--display);
+      }
+      .card .sub {
+        margin: 6px 0 10px;
+        text-align: center;
+        color: var(--ink-3);
+        font-size: 14px;
+      }
+      .card .btn.primary {
+        width: 100%;
+        margin-top: 18px;
+        padding: 14px;
+        border-radius: 14px;
+      }
+
+      /* ---------- додаток ---------- */
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px clamp(16px, 4vw, 40px);
+        border-bottom: 1px solid var(--line-soft);
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font: 400 22px/1 var(--display);
+      }
+      .brand svg {
+        width: 36px;
+        height: 36px;
+      }
+      .user {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 13px;
+        color: var(--ink-3);
+      }
+      .mhead {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+        padding: 28px clamp(16px, 4vw, 40px) 14px;
+      }
+      .mtitle {
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+      }
+      .mtitle h2 {
+        margin: 0;
+        font: 400 clamp(36px, 6vw, 58px) / 1 var(--display);
+        text-transform: capitalize;
+      }
+      .mtitle span {
+        font: 400 clamp(18px, 3vw, 26px) / 1 var(--display);
+        color: var(--ink-3);
+      }
+      .mctl {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 20px;
+        padding: 0 clamp(16px, 4vw, 40px) 18px;
+        font-size: 13px;
+        color: var(--ink-2);
+      }
+      .legend i,
+      .mh i,
+      .chip i {
+        display: inline-block;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--c);
+      }
+      .legend i {
+        margin-right: 8px;
+      }
+      .cal {
+        padding: 0 clamp(12px, 4vw, 40px) 48px;
+      }
+      .dow,
+      .days {
+        display: grid;
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+        gap: clamp(4px, 0.8vw, 10px);
+      }
+      .dow div {
+        padding: 6px 0 10px;
+        text-align: center;
+        font-size: 13px;
+        color: var(--ink-3);
+      }
+      .day {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: clamp(70px, 11vw, 122px);
+        padding: 10px 12px;
+        text-align: left;
+        cursor: pointer;
+        background: var(--surface);
+        border: 1px solid var(--line-soft);
+        border-radius: 16px;
+        transition: border-color 0.15s, background 0.15s, transform 0.15s;
+      }
+      .day:hover {
+        background: var(--surface-2);
+        border-color: rgba(203, 166, 85, 0.55);
+        transform: translateY(-2px);
+      }
+      .day.past {
+        opacity: 0.6;
+      }
+      .day.today {
+        border-color: var(--gold);
+        box-shadow: 0 0 0 3px rgba(203, 166, 85, 0.16);
+      }
+      .day .num {
+        font: 400 22px/1 var(--display);
+      }
+      .day.today .num {
+        color: var(--gold-hi);
+      }
+      .day .cnt {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        font-size: 12px;
+        color: var(--ink-2);
+      }
+      .day .cnt b {
+        font-weight: 600;
+        color: var(--ink);
+      }
+      .glyph {
+        --gh: 46px;
+        display: flex;
+        align-items: flex-end;
+        gap: 5px;
+        height: var(--gh);
+      }
+      .glyph i {
+        width: 7px;
+        height: calc(4px + var(--f) * var(--gh));
+        border-radius: 3px;
+        background: var(--c);
+        opacity: 0.2;
+      }
+      .glyph i.on {
+        opacity: 1;
+      }
+
+      /* ---------- вікна ---------- */
+      dialog {
+        max-width: none;
+        max-height: none;
+        padding: 0;
+        color: var(--ink);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        box-shadow: 0 40px 100px rgba(0, 0, 0, 0.6);
+      }
+      dialog::backdrop {
+        background: rgba(5, 10, 8, 0.68);
+        backdrop-filter: blur(3px);
+      }
+      dialog[open] {
+        animation: pop 0.18s ease-out;
+      }
+      @keyframes pop {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.985);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      #dayDlg {
+        width: min(1040px, calc(100vw - 32px));
+        height: min(860px, calc(100dvh - 32px));
+      }
+      #dayDlg[open] {
+        display: flex;
+        flex-direction: column;
+      }
+      .dhead {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 16px 22px;
+        border-bottom: 1px solid var(--line-soft);
+      }
+      .dhead .wd {
+        font-size: 13px;
+        color: var(--ink-3);
+        text-transform: capitalize;
+      }
+      .dhead .dt {
+        font: 400 clamp(26px, 4vw, 34px) / 1.1 var(--display);
+      }
+      .dhead .ctl {
+        display: flex;
+        gap: 8px;
+      }
+      .dbody {
+        flex: 1;
+        overflow: auto;
+      }
+      .tgrid {
+        display: grid;
+        grid-template-columns: 56px repeat(var(--n), minmax(var(--colw, 132px), 1fr));
+        min-width: calc(56px + var(--n) * var(--colw, 132px));
+      }
+      .corner,
+      .mh {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+      }
+      .corner {
+        left: 0;
+        z-index: 6;
+      }
+      .mh {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 12px;
+        font-weight: 600;
+        border-left: 1px solid var(--line-soft);
+      }
+      .tcol {
+        position: sticky;
+        left: 0;
+        z-index: 4;
+        background: var(--surface);
+      }
+      .tl {
+        height: var(--row);
+        padding: 5px 10px 0 0;
+        text-align: right;
+        font-size: 12px;
+        color: var(--ink-3);
+        font-variant-numeric: tabular-nums;
+      }
+      .tl.hr {
+        color: var(--ink-2);
+      }
+      .col {
+        position: relative;
+        border-left: 1px solid var(--line-soft);
+      }
+      .cell {
+        position: relative;
+        height: var(--row);
+        cursor: pointer;
+        border-top: 1px solid var(--line-soft);
+      }
+      .cell.hr {
+        border-top-color: var(--line);
+      }
+      .cell:not(.busy):hover {
+        background: rgba(var(--rgb), 0.1);
+      }
+      .cell:not(.busy):hover::after {
+        content: "+";
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+        color: var(--c);
+      }
+      .cell.busy {
+        cursor: default;
+      }
+      .bk {
+        position: absolute;
+        left: 4px;
+        right: 4px;
+        z-index: 2;
+        overflow: hidden;
+        padding: 6px 9px;
+        font-size: 12px;
+        line-height: 1.3;
+        cursor: pointer;
+        border-radius: 10px;
+        background: rgba(var(--rgb), 0.17);
+        border: 1px solid rgba(var(--rgb), 0.5);
+        border-left: 4px solid var(--c);
+        transition: background 0.15s;
+      }
+      .bk:hover {
+        background: rgba(var(--rgb), 0.28);
+      }
+      .bk b {
+        display: block;
+        font-size: 13px;
+        font-weight: 600;
+      }
+      .bk span {
+        display: block;
+        color: var(--ink-2);
+      }
+      #formDlg,
+      #viewDlg {
+        width: min(440px, calc(100vw - 24px));
+      }
+      .pad {
+        padding: 26px;
+      }
+      .pad h3 {
+        margin: 12px 0 2px;
+        font: 400 28px/1.15 var(--display);
+      }
+      .when {
+        margin: 0;
+        color: var(--ink-2);
+        font-size: 14px;
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        font-size: 13px;
+        border-radius: 999px;
+        background: rgba(var(--rgb), 0.14);
+        border: 1px solid rgba(var(--rgb), 0.45);
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 22px;
+      }
+      dl.kv {
+        display: grid;
+        grid-template-columns: 96px 1fr;
+        gap: 10px 12px;
+        margin: 18px 0 0;
+      }
+      dl.kv dt {
+        color: var(--ink-3);
+        font-size: 13px;
+      }
+      dl.kv dd {
+        margin: 0;
+      }
+      dl.kv a {
+        color: var(--gold-hi);
+      }
+
+      #toast {
+        position: fixed;
+        inset: auto auto 24px 50%;
+        margin: 0;
+        transform: translateX(-50%);
+        padding: 12px 20px;
+        border: 1px solid rgba(203, 166, 85, 0.5);
+        border-radius: 999px;
+        background: var(--surface-2);
+        color: var(--ink);
+        font-size: 14px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+      }
+
+      @media (max-width: 700px) {
+        .user span {
+          display: none;
+        }
+        .day {
+          padding: 7px 7px;
+        }
+        .day .num {
+          font-size: 18px;
+        }
+        .day .cnt {
+          display: none;
+        }
+        .tgrid {
+          --colw: 112px;
+        }
+        .glyph {
+          --gh: 24px;
+          gap: 3px;
+        }
+        .glyph i {
+          width: 4px;
+        }
+        #dayDlg {
+          width: 100vw;
+          height: 100dvh;
+          border-radius: 0;
+          border: none;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- квітка франжипані: один символ, використовується в двох місцях -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <radialGradient id="petal" cx="0" cy="0" r="86" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#f0c24a" />
+          <stop offset="0.32" stop-color="#f7e3a4" />
+          <stop offset="1" stop-color="#fbf5e3" />
+        </radialGradient>
+        <symbol id="frangi" viewBox="-90 -90 180 180">
+          <g fill="url(#petal)" stroke="rgba(120,90,20,.28)" stroke-width="1.2">
+            <path d="M0 0C30-12 38-58 6-86C-18-62-20-22 0 0Z" />
+            <path d="M0 0C30-12 38-58 6-86C-18-62-20-22 0 0Z" transform="rotate(72)" />
+            <path d="M0 0C30-12 38-58 6-86C-18-62-20-22 0 0Z" transform="rotate(144)" />
+            <path d="M0 0C30-12 38-58 6-86C-18-62-20-22 0 0Z" transform="rotate(216)" />
+            <path d="M0 0C30-12 38-58 6-86C-18-62-20-22 0 0Z" transform="rotate(288)" />
+          </g>
+          <circle r="7" fill="#e8b73c" />
+        </symbol>
+      </defs>
+    </svg>
+
+    <!-- ===== ВХІД ===== -->
+    <section id="login" hidden>
+      <svg
+        class="terraces"
+        viewBox="0 0 1440 420"
+        preserveAspectRatio="xMidYMax slice"
+        aria-hidden="true"
+      >
+        <path
+          d="M0 210C240 150 430 255 700 195S1200 140 1440 205V420H0Z"
+          fill="#1d382d"
+        />
+        <path
+          d="M0 210C240 150 430 255 700 195S1200 140 1440 205"
+          fill="none"
+          stroke="#cba655"
+          stroke-opacity=".38"
+          stroke-width="1.5"
+        />
+        <path
+          d="M0 268C300 218 520 312 820 254S1260 218 1440 268V420H0Z"
+          fill="#162b23"
+        />
+        <path
+          d="M0 268C300 218 520 312 820 254S1260 218 1440 268"
+          fill="none"
+          stroke="#cba655"
+          stroke-opacity=".26"
+          stroke-width="1.5"
+        />
+        <path
+          d="M0 328C260 296 560 356 860 320S1250 298 1440 334V420H0Z"
+          fill="#10211b"
+        />
+        <path
+          d="M0 328C260 296 560 356 860 320S1250 298 1440 334"
+          fill="none"
+          stroke="#cba655"
+          stroke-opacity=".18"
+          stroke-width="1.5"
+        />
+        <path d="M0 380C320 356 640 400 960 376S1300 362 1440 386V420H0Z" fill="#0d1813" />
+      </svg>
+
+      <div class="card">
+        <svg class="bloom" aria-hidden="true"><use href="#frangi" /></svg>
+        <h1 id="loginTitle">Масажний салон</h1>
+        <p class="sub">Вхід для майстрів</p>
+        <form id="loginForm">
+          <label class="field">
+            <span>Пошта</span>
+            <input type="email" id="lEmail" autocomplete="username" required />
+          </label>
+          <label class="field">
+            <span>Пароль</span>
+            <input type="password" id="lPass" autocomplete="current-password" required />
+          </label>
+          <p class="err" id="lErr" role="alert"></p>
+          <button class="btn primary" id="lBtn" type="submit">Увійти</button>
+        </form>
+      </div>
+    </section>
+
+    <!-- ===== ДОДАТОК ===== -->
+    <div id="app" hidden>
+      <header class="top">
+        <div class="brand">
+          <svg aria-hidden="true"><use href="#frangi" /></svg>
+          <span id="brandName">Масажний салон</span>
+        </div>
+        <div class="user">
+          <span id="who"></span>
+          <button class="btn" id="logoutBtn" type="button">Вийти</button>
+        </div>
+      </header>
+
+      <div class="mhead">
+        <div class="mtitle">
+          <h2 id="mName"></h2>
+          <span id="mYear"></span>
+        </div>
+        <div class="mctl">
+          <button class="btn" id="todayBtn" type="button">Сьогодні</button>
+          <button class="btn round" id="mPrev" type="button" aria-label="Попередній місяць">‹</button>
+          <button class="btn round" id="mNext" type="button" aria-label="Наступний місяць">›</button>
+        </div>
+      </div>
+      <div class="legend" id="legend"></div>
+
+      <div class="cal">
+        <div class="dow">
+          <div>Пн</div>
+          <div>Вт</div>
+          <div>Ср</div>
+          <div>Чт</div>
+          <div>Пт</div>
+          <div>Сб</div>
+          <div>Нд</div>
+        </div>
+        <div class="days" id="days"></div>
+      </div>
+    </div>
+
+    <!-- ===== ДЕНЬ ===== -->
+    <dialog id="dayDlg">
+      <div class="dhead">
+        <div>
+          <div class="wd" id="dayWd"></div>
+          <div class="dt" id="dayDt"></div>
+        </div>
+        <div class="ctl">
+          <button class="btn round" id="dPrev" type="button" aria-label="Попередній день">‹</button>
+          <button class="btn round" id="dNext" type="button" aria-label="Наступний день">›</button>
+          <button class="btn round" id="dClose" type="button" aria-label="Закрити">×</button>
+        </div>
+      </div>
+      <div class="dbody" id="dayBody"></div>
+    </dialog>
+
+    <!-- ===== НОВИЙ ЗАПИС ===== -->
+    <dialog id="formDlg">
+      <form id="form" class="pad">
+        <span class="chip" id="fChip"></span>
+        <h3>Новий запис</h3>
+        <p class="when" id="fWhen"></p>
+
+        <label class="field">
+          <span>Процедура</span>
+          <select id="proc"></select>
+        </label>
+        <div class="row2">
+          <label class="field">
+            <span>Початок</span>
+            <input type="time" id="start" step="60" required />
+          </label>
+          <label class="field">
+            <span>Тривалість, хв</span>
+            <input type="number" id="dur" min="5" step="5" required />
+          </label>
+        </div>
+        <label class="field">
+          <span>Ціна, ₴</span>
+          <input type="number" id="price" min="0" step="1" />
+        </label>
+        <label class="field">
+          <span>Ім'я клієнта</span>
+          <input id="client" autocomplete="off" required />
+        </label>
+        <label class="field">
+          <span>Телефон</span>
+          <input id="phone" type="tel" autocomplete="off" />
+        </label>
+        <p class="err" id="fErr" role="alert"></p>
+        <div class="actions">
+          <button class="btn" type="button" id="fClose">Закрити</button>
+          <button class="btn primary" type="submit">Записати</button>
+        </div>
+      </form>
+    </dialog>
+
+    <!-- ===== ПЕРЕГЛЯД ЗАПИСУ ===== -->
+    <dialog id="viewDlg">
+      <div class="pad">
+        <span class="chip" id="vChip"></span>
+        <h3 id="vTitle"></h3>
+        <p class="when" id="vWhen"></p>
+        <dl class="kv" id="vBody"></dl>
+        <div class="actions">
+          <button class="btn danger" type="button" id="deleteBtn">Скасувати запис</button>
+          <button class="btn" type="button" id="vClose">Закрити</button>
+        </div>
+      </div>
+    </dialog>
+
+    <div id="toast" popover="manual" role="status"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      // ---------- підключення до бази ----------
+      const SUPABASE_URL = "https://itikbwlipgtfblbzbqvk.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_NFORViyJ3Anj2NDxpGHu7Q_hZfDeNz5";
+      const db = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // ---------- налаштування ----------
+      const SALON_NAME = "SHAPES"; // тут можна вписати справжню назву
+      const masters = [
+        { name: "Людмила", color: "#ebd27f", rgb: "235,210,127" },
+        { name: "Наталья", color: "#ee9760", rgb: "238,151,96" },
+        { name: "Анастасия", color: "#d46ea5", rgb: "212,110,165" },
+        { name: "Кирилл", color: "#5cc2b0", rgb: "92,194,176" },
+      ];
+      const START = 9 * 60; // початок дня
+      const END = 22 * 60; // кінець дня
+      const STEP = 30; // крок сітки, хвилин
+      const ROW = 44; // висота одного кроку, px
+      const FULL_LOAD = 480; // 8 годин запису = "повний" стовпчик у календарі
+
+      // процедури з прайсу: [назва, хвилини, ціна]
+      const procedures = {
+        Апаратні: [
+          ["Пресотерапія", 45, 699],
+          ["Вакуум-рол. масаж", 60, 899],
+          ["Вібраційний масаж", 45, 750],
+          ["PF-ліфтинг | 1 зона", 40, 699],
+          ["Кавітація | 1 зона", 40, 699],
+          ["Ендосфера | все тіло", 65, 1499],
+          ["Ендосфера | нижня частина", 50, 1299],
+        ],
+        Обгортання: [
+          ["Антицел. холод / жар", 25, 599],
+          ["Сольове", 75, 1399],
+          ["Парафінове", 75, 1399],
+          ["STYX CELLO GEL", 60, 1299],
+          ["Гіпсотерапія", 75, 1499],
+          ["Гіпсотерапія | 2 зони", 90, 2499],
+          ["WHISKY WRAPPING", 75, 1599],
+          ["Ліфтинг-бандажне", 75, 1599],
+        ],
+        Комплекси: [
+          ["Апаратне комбо 2х (вак+вібр)", 60, 1199],
+          ["Кавіт. + пресо", 60, 1199],
+          ["Кавіт. + RF + пресо", 80, 1399],
+          ["Кавіт. + RF + вак на все тіло", 90, 1599],
+          ["Кавіт. + RF + вак на 1 зону", 80, 1399],
+          ["Сольове обгорт + гіпс", 90, 2199],
+          ["Доп. обгорт. (а/ц)", 25, 299],
+        ],
+        "Ручний масаж": [
+          ["Масаж спини", 30, 750],
+          ["Масаж все тіло", 45, 1100],
+          ["Масаж все тіло", 60, 1300],
+          ["Стоун-терапія", 60, 1600],
+          ["Тейпування | 1 аплікація", 15, 350],
+          ["Мануальна терапія", 60, 1300],
+          ["Масаж обличчя", 40, 800],
+        ],
+      };
+
+      // ---------- стан ----------
+      const $ = (id) => document.getElementById(id);
+      let session = null;
+      let lastUser = null;
+      let viewMonth = new Date(); // завжди 1-ше число місяця, який показуємо
+      viewMonth.setDate(1);
+      let monthRows = []; // усі записи місяця
+      let dayDate = null; // день, відкритий у вікні
+      let current = null; // клітинка, яку натиснули
+      let viewing = null; // запис, який відкрили
+      let loadToken = 0;
+
+      // ---------- допоміжні функції ----------
+      const pad = (n) => String(n).padStart(2, "0");
+      const ymd = (d) => d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate());
+      const parseYmd = (s) => new Date(+s.slice(0, 4), +s.slice(5, 7) - 1, +s.slice(8, 10));
+      const timeText = (t) => Math.floor(t / 60) + ":" + pad(t % 60);
+      const esc = (s) =>
+        String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+      const masterByName = (n) => masters.find((m) => m.name === n) || masters[0];
+      function plural(n) {
+        const a = n % 10, b = n % 100;
+        if (a === 1 && b !== 11) return "запис";
+        if (a >= 2 && a <= 4 && (b < 10 || b >= 20)) return "записи";
+        return "записів";
+      }
+      function toast(msg) {
+        const t = $("toast");
+        t.textContent = msg;
+        try { if (!t.matches(":popover-open")) t.showPopover(); } catch (e) {}
+        clearTimeout(toast.t);
+        toast.t = setTimeout(() => { try { t.hidePopover(); } catch (e) {} }, 2600);
+      }
+
+      // ---------- завантаження місяця ----------
+      async function loadMonth() {
+        const my = ++loadToken;
+        const y = viewMonth.getFullYear(), m = viewMonth.getMonth();
+        const from = ymd(new Date(y, m, 1));
+        const to = ymd(new Date(y, m + 1, 0));
+        const { data, error } = await db
+          .from("bookings")
+          .select("*")
+          .gte("date", from)
+          .lte("date", to)
+          .order("start_min");
+        if (my !== loadToken) return; // прийшла відповідь на застарілий запит
+        if (error) {
+          toast("Не вдалося завантажити записи. Оновіть сторінку.");
+          return;
+        }
+        monthRows = data;
+        renderMonth();
+        if ($("dayDlg").open) renderDay();
+      }
+
+      // ---------- календар місяця ----------
+      function renderMonth() {
+        const y = viewMonth.getFullYear(), m = viewMonth.getMonth();
+        const monthName = viewMonth.toLocaleDateString("uk-UA", { month: "long" });
+        $("mName").textContent = monthName;
+        $("mYear").textContent = y;
+
+        const stats = {};
+        monthRows.forEach((r) => {
+          const s = stats[r.date] || (stats[r.date] = { count: 0, mins: masters.map(() => 0) });
+          s.count++;
+          const mi = masters.findIndex((x) => x.name === r.master);
+          if (mi >= 0) s.mins[mi] += r.dur;
+        });
+
+        const daysIn = new Date(y, m + 1, 0).getDate();
+        const lead = (new Date(y, m, 1).getDay() + 6) % 7; // тиждень з понеділка
+        const todayKey = ymd(new Date());
+        let html = "";
+        for (let i = 0; i < lead; i++) html += "<div></div>";
+        for (let d = 1; d <= daysIn; d++) {
+          const key = y + "-" + pad(m + 1) + "-" + pad(d);
+          const s = stats[key];
+          const bars = masters
+            .map((mu, i) => {
+              const mins = s ? s.mins[i] : 0;
+              const f = Math.min(1, mins / FULL_LOAD);
+              return `<i class="${mins ? "on" : ""}" style="--f:${f.toFixed(2)};--c:${mu.color}"></i>`;
+            })
+            .join("");
+          const label = d + " " + monthName + (s ? ", " + s.count + " " + plural(s.count) : ", вільно");
+          html +=
+            `<button class="day${key === todayKey ? " today" : ""}${key < todayKey ? " past" : ""}" data-d="${key}" aria-label="${label}">` +
+            `<span class="num">${d}</span>` +
+            (s ? `<span class="cnt"><b>${s.count}</b><span class="w"> ${plural(s.count)}</span></span>` : "") +
+            `<span class="glyph">${bars}</span></button>`;
+        }
+        $("days").innerHTML = html;
+      }
+
+      $("days").addEventListener("click", (e) => {
+        const b = e.target.closest(".day");
+        if (b) openDay(b.dataset.d);
+      });
+      $("mPrev").onclick = () => { viewMonth.setMonth(viewMonth.getMonth() - 1); loadMonth(); };
+      $("mNext").onclick = () => { viewMonth.setMonth(viewMonth.getMonth() + 1); loadMonth(); };
+      $("todayBtn").onclick = () => {
+        viewMonth = new Date();
+        viewMonth.setDate(1);
+        loadMonth();
+      };
+
+      // ---------- вікно дня ----------
+      const dayDlg = $("dayDlg");
+      function openDay(key) {
+        dayDate = parseYmd(key);
+        renderDay();
+        dayDlg.showModal();
+        const body = $("dayBody");
+        body.scrollTop = 0;
+        if (key === ymd(new Date())) {
+          const now = new Date().getHours() * 60 + new Date().getMinutes();
+          body.scrollTop = Math.max(0, ((now - START - 60) / STEP) * ROW);
+        }
+      }
+      function renderDay() {
+        const key = ymd(dayDate);
+        const rows = monthRows.filter((r) => r.date === key);
+        $("dayWd").textContent = dayDate.toLocaleDateString("uk-UA", { weekday: "long" });
+        $("dayDt").textContent = dayDate.toLocaleDateString("uk-UA", { day: "numeric", month: "long" });
+
+        let html = `<div class="tgrid" style="--n:${masters.length};--row:${ROW}px"><div class="corner"></div>`;
+        masters.forEach((m) => (html += `<div class="mh" style="--c:${m.color}"><i></i>${esc(m.name)}</div>`));
+
+        html += '<div class="tcol">';
+        for (let t = START; t < END; t += STEP) {
+          html += `<div class="tl${t % 60 === 0 ? " hr" : ""}">${timeText(t)}</div>`;
+        }
+        html += "</div>";
+
+        masters.forEach((m, mi) => {
+          const mine = rows.filter((r) => r.master === m.name);
+          html += `<div class="col" data-m="${mi}" style="--c:${m.color};--rgb:${m.rgb}">`;
+          for (let t = START; t < END; t += STEP) {
+            const busy = mine.some((r) => t < r.start_min + r.dur && t + STEP > r.start_min);
+            html += `<div class="cell${t % 60 === 0 ? " hr" : ""}${busy ? " busy" : ""}" data-t="${t}"></div>`;
+          }
+          mine.forEach((r) => {
+            const top = ((r.start_min - START) / STEP) * ROW + 1;
+            const h = Math.max((r.dur / STEP) * ROW - 2, 22);
+            html +=
+              `<div class="bk" data-id="${r.id}" style="top:${top}px;height:${h}px">` +
+              `<b>${esc(r.client)}</b><span>${esc(r.proc)}</span>` +
+              `<span>${timeText(r.start_min)} – ${timeText(r.start_min + r.dur)}</span></div>`;
+          });
+          html += "</div>";
+        });
+        html += "</div>";
+        $("dayBody").innerHTML = html;
+      }
+      $("dayBody").addEventListener("click", (e) => {
+        const bk = e.target.closest(".bk");
+        if (bk) { openView(bk.dataset.id); return; }
+        const cell = e.target.closest(".cell");
+        if (cell && !cell.classList.contains("busy")) {
+          openForm(+cell.parentElement.dataset.m, +cell.dataset.t);
+        }
+      });
+      $("dClose").onclick = () => dayDlg.close();
+      async function shiftDay(delta) {
+        dayDate.setDate(dayDate.getDate() + delta);
+        const needMonth =
+          dayDate.getFullYear() !== viewMonth.getFullYear() || dayDate.getMonth() !== viewMonth.getMonth();
+        if (needMonth) {
+          viewMonth = new Date(dayDate.getFullYear(), dayDate.getMonth(), 1);
+          await loadMonth(); // перемалює і місяць, і день
+        } else {
+          renderDay();
+        }
+        $("dayBody").scrollTop = 0;
+      }
+      $("dPrev").onclick = () => shiftDay(-1);
+      $("dNext").onclick = () => shiftDay(1);
+
+      // ---------- форма нового запису ----------
+      const formDlg = $("formDlg");
+      const procSelect = $("proc");
+      const durInput = $("dur");
+      const priceInput = $("price");
+      const flat = [];
+      for (const group in procedures) {
+        const og = document.createElement("optgroup");
+        og.label = group;
+        procedures[group].forEach((p) => {
+          const opt = document.createElement("option");
+          opt.value = flat.length;
+          opt.textContent = p[0] + " · " + p[1] + " хв · " + p[2] + " ₴";
+          flat.push({ name: p[0], min: p[1], price: p[2] });
+          og.appendChild(opt);
+        });
+        procSelect.appendChild(og);
+      }
+      procSelect.onchange = () => {
+        const p = flat[procSelect.value];
+        durInput.value = p.min;
+        priceInput.value = p.price;
+        updWhen();
+      };
+      const startInput = $("start");
+      function readStart() {
+        const [h, m] = (startInput.value || "0:0").split(":").map(Number);
+        return h * 60 + m;
+      }
+      durInput.oninput = updWhen;
+      startInput.oninput = updWhen;
+
+      function updWhen() {
+        if (!current) return;
+        const start = readStart();
+        const dur = Number(durInput.value) || 0;
+        $("fWhen").textContent =
+          dayDate.toLocaleDateString("uk-UA", { weekday: "long", day: "numeric", month: "long" }) +
+          ", " + timeText(start) + " – " + timeText(start + dur);
+      }
+      function openForm(mi, t) {
+        const m = masters[mi];
+        current = { master: m.name, start: t, date: ymd(dayDate) };
+        $("form").reset();
+        procSelect.value = 0;
+        durInput.value = flat[0].min;
+        priceInput.value = flat[0].price;
+        startInput.value = pad(Math.floor(t / 60)) + ":" + pad(t % 60);
+        $("fErr").textContent = "";
+        $("fChip").style.setProperty("--rgb", m.rgb);
+        $("fChip").innerHTML = `<i style="--c:${m.color}"></i>${esc(m.name)}`;
+        updWhen();
+        formDlg.showModal();
+        $("client").focus();
+      }
+      $("fClose").onclick = () => formDlg.close();
+
+      $("form").onsubmit = async (e) => {
+        e.preventDefault();
+        const err = $("fErr");
+        err.textContent = "";
+        const dur = Number(durInput.value);
+        const start = readStart();
+        const end = start + dur;
+
+        if (!(dur > 0)) { err.textContent = "Вкажіть тривалість процедури."; return; }
+        if (start < START) { err.textContent = "Початок раніше за відкриття. Оберіть час після " + timeText(START) + "."; return; }
+        if (end > END) { err.textContent = "Процедура виходить за межі робочого дня. Зменшіть тривалість або оберіть раніший час."; return; }
+        const clash = monthRows.some(
+          (b) => b.date === current.date && b.master === current.master && start < b.start_min + b.dur && end > b.start_min
+        );
+        if (clash) { err.textContent = "У цього майстра вже є запис на цей час. Оберіть інший час."; return; }
+
+        const p = flat[procSelect.value];
+        const { error } = await db.from("bookings").insert({
+          date: current.date,
+          master: current.master,
+          start_min: start,
+          dur: dur,
+          proc: p.name,
+          price: priceInput.value === "" ? null : Number(priceInput.value),
+          client: $("client").value.trim(),
+          phone: $("phone").value.trim() || null,
+        });
+        if (error) {
+          err.textContent =
+            error.code === "23P01"
+              ? "У цього майстра вже є запис на цей час. Оберіть інший час."
+              : "Не вдалося зберегти запис: " + error.message;
+          return;
+        }
+        formDlg.close();
+        toast("Записано");
+        loadMonth();
+      };
+
+      // ---------- перегляд і скасування ----------
+      const viewDlg = $("viewDlg");
+      let armed = false, armTimer = null;
+      function resetDelete() {
+        armed = false;
+        clearTimeout(armTimer);
+        $("deleteBtn").textContent = "Скасувати запис";
+        $("deleteBtn").classList.remove("armed");
+      }
+      function openView(id) {
+        const r = monthRows.find((x) => String(x.id) === String(id));
+        if (!r) return;
+        viewing = r;
+        resetDelete();
+        const m = masterByName(r.master);
+        $("vChip").style.setProperty("--rgb", m.rgb);
+        $("vChip").innerHTML = `<i style="--c:${m.color}"></i>${esc(r.master)}`;
+        $("vTitle").textContent = r.client;
+        $("vWhen").textContent =
+          parseYmd(r.date).toLocaleDateString("uk-UA", { weekday: "long", day: "numeric", month: "long" }) +
+          ", " + timeText(r.start_min) + " – " + timeText(r.start_min + r.dur);
+        $("vBody").innerHTML =
+          `<dt>Процедура</dt><dd>${esc(r.proc)}</dd>` +
+          `<dt>Ціна</dt><dd>${r.price != null ? esc(r.price) + " ₴" : "—"}</dd>` +
+          `<dt>Телефон</dt><dd>${r.phone ? `<a href="tel:${esc(r.phone)}">${esc(r.phone)}</a>` : "—"}</dd>`;
+        viewDlg.showModal();
+      }
+      $("vClose").onclick = () => viewDlg.close();
+      viewDlg.addEventListener("close", resetDelete);
+      $("deleteBtn").onclick = async () => {
+        if (!armed) {
+          armed = true;
+          $("deleteBtn").textContent = "Підтвердити скасування";
+          $("deleteBtn").classList.add("armed");
+          armTimer = setTimeout(resetDelete, 4000);
+          return;
+        }
+        resetDelete();
+        const { error } = await db.from("bookings").delete().eq("id", viewing.id);
+        if (error) { toast("Не вдалося скасувати запис: " + error.message); return; }
+        viewDlg.close();
+        toast("Запис скасовано");
+        loadMonth();
+      };
+
+      // ---------- вхід і вихід ----------
+      $("loginTitle").textContent = SALON_NAME;
+      $("brandName").textContent = SALON_NAME;
+      $("legend").innerHTML = masters
+        .map((m) => `<span><i style="--c:${m.color}"></i>${esc(m.name)}</span>`)
+        .join("");
+
+      $("loginForm").onsubmit = async (e) => {
+        e.preventDefault();
+        const btn = $("lBtn");
+        btn.disabled = true;
+        btn.textContent = "Входимо…";
+        $("lErr").textContent = "";
+        const { error } = await db.auth.signInWithPassword({
+          email: $("lEmail").value.trim(),
+          password: $("lPass").value,
+        });
+        btn.disabled = false;
+        btn.textContent = "Увійти";
+        if (error) {
+          $("lErr").textContent = "Невірна пошта або пароль. Перевірте дані й спробуйте ще раз.";
+          return;
+        }
+        $("lPass").value = "";
+      };
+      $("logoutBtn").onclick = () => db.auth.signOut();
+
+      function showApp() {
+        $("login").hidden = true;
+        $("app").hidden = false;
+        $("who").textContent = session.user.email;
+        loadMonth();
+      }
+      function showLogin() {
+        [dayDlg, formDlg, viewDlg].forEach((d) => d.open && d.close());
+        monthRows = [];
+        $("app").hidden = true;
+        $("login").hidden = false;
+      }
+
+      // спрацьовує при завантаженні сторінки, вході, виході і оновленні сесії
+      db.auth.onAuthStateChange((event, s) => {
+        session = s;
+        setTimeout(() => {
+          if (session) {
+            if (lastUser !== session.user.id) {
+              lastUser = session.user.id;
+              showApp();
+            }
+          } else {
+            lastUser = null;
+            showLogin();
+          }
+        }, 0);
+      });
+    </script>
+  </body>
+</html>
